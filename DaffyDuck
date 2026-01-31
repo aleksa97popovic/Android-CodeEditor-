@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daffy Duck Full Stack UI</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      min-height: 100vh;
+      background: url("44798b31-1d82-4b4c-8079-299b4d511ad0.jpg") no-repeat center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 0;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: url("https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Daffy_Duck.svg/800px-Daffy_Duck.svg.png")
+        no-repeat center/contain;
+      opacity: 0.15;
+      width: 800px;
+      height: 800px;
+      z-index: 1;
+    }
+
+    .main-container {
+      position: relative;
+      z-index: 2;
+      background: rgba(0,0,0,0.55);
+      padding: 50px 35px 40px;
+      border-radius: 20px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.5);
+      width: 420px;
+      text-align: center;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .duck-inner {
+      width: 150px;
+      display: block;
+      margin: 0 auto 10px auto;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.4));
+    }
+
+    h2 {
+      color: #fff;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus { background: rgba(255,255,255,0.35); }
+
+    input::placeholder { color: rgba(255,255,255,0.7); }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover { background-color: rgba(255,255,255,0.35); }
+
+    .toggle-link {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .toggle-link a {
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .error {
+      color: #ff8080;
+      margin-top: 12px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .table-section {
+      background: rgba(255,255,255,0.15);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    th {
+      color: #fff;
+      background: rgba(0,0,0,0.3);
+    }
+
+    td a {
+      color: #ff6666;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-container" id="authContainer">
+    <img class="duck-inner" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Daffy_Duck.svg/800px-Daffy_Duck.svg.png" alt="Daffy Duck">
+    <h2 id="formTitle">🦆 Prijava</h2>
+
+    <form id="loginForm">
+      <input type="text" id="loginUser" placeholder="Korisničko ime" required>
+      <input type="password" id="loginPass" placeholder="Lozinka" required>
+      <button type="submit">Uloguj se</button>
+    </form>
+
+    <form id="signupForm" style="display:none;">
+      <input type="text" id="regUser" placeholder="Korisničko ime" required>
+      <input type="email" id="regEmail" placeholder="Email" required>
+      <input type="text" id="regIme" placeholder="Ime i prezime" required>
+      <input type="number" id="regGodina" placeholder="Godina rođenja" min="1900" max="2026" required>
+      <input type="password" id="regPass" placeholder="Lozinka" required>
+      <input type="password" id="regConfirm" placeholder="Potvrdi lozinku" required>
+      <button type="submit">Registruj se 🦆</button>
+    </form>
+
+    <p class="error" id="formError"></p>
+
+    <div class="toggle-link">
+      <span id="toggleText">📝 Nemaš nalog? <a onclick="toggleForm()">Registruj se</a></span>
+    </div>
+  </div>
+
+  <div class="main-container" id="dashboard" style="display:none; width:80%; max-width:900px;">
+    <img class="duck-inner" src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f4/Daffy_Duck.svg/800px-Daffy_Duck.svg.png">
+    <h2>📊 Daffy Duck Dashboard</h2>
+    <p>Dobrodošao, <strong id="welcomeUser"></strong>!</p>
+
+    <div class="table-section">
+      <table id="userTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Korisničko ime</th>
+            <th>Ime</th>
+            <th>Email</th>
+            <th>Godina</th>
+            <th>Akcija</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <button onclick="logout()">🚪 Odjavi se</button>
+  </div>
+
+  <script>
+    let users = [];
+    let userId = 1;
+
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const formTitle = document.getElementById("formTitle");
+    const toggleText = document.getElementById("toggleText");
+    const errorMsg = document.getElementById("formError");
+    const dashboard = document.getElementById("dashboard");
+    const authContainer = document.getElementById("authContainer");
+    const userTable = document.querySelector("#userTable tbody");
+    const welcome = document.getElementById("welcomeUser");
+
+    function toggleForm() {
+      if (signupForm.style.display === "none") {
+        signupForm.style.display = "block";
+        loginForm.style.display = "none";
+        formTitle.textContent = "🦆 Registracija";
+        toggleText.innerHTML = '📥 Već imaš nalog? <a onclick="toggleForm()">Uloguj se ovde</a>';
+      } else {
+        signupForm.style.display = "none";
+        loginForm.style.display = "block";
+        formTitle.textContent = "🦆 Prijava";
+        toggleText.innerHTML = '📝 Nemaš nalog? <a onclick="toggleForm()">Registruj se</a>';
+      }
+      errorMsg.style.display = "none";
+    }
+
+    signupForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const username = document.getElementById("regUser").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const ime = document.getElementById("regIme").value.trim();
+      const godina = +document.getElementById("regGodina").value;
+      const pass = document.getElementById("regPass").value;
+      const confirm = document.getElementById("regConfirm").value;
+
+      if (pass !== confirm) {
+        errorMsg.textContent = "❌ Lozinke se ne poklapaju!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      const novi = { id: userId++, username, email, ime, godina };
+      users.push(novi);
+
+      alert(`✅ Korisnik ${ime} sačuvan u bazi!`);
+
+      signupForm.reset();
+      toggleForm();
+    });
+
+    loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const user = document.getElementById("loginUser").value.trim();
+      const pass = document.getElementById("loginPass").value.trim();
+
+      if (!user || !pass) {
+        errorMsg.textContent = "❌ Popuni korisničko ime i lozinku!";
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      showDashboard(user);
+    });
+
+    function showDashboard(user) {
+      authContainer.style.display = "none";
+      dashboard.style.display = "block";
+      welcome.textContent = user;
+      renderTable();
+    }
+
+    function renderTable() {
+      userTable.innerHTML = "";
+
+      if (users.length === 0) {
+        userTable.innerHTML = '<tr><td colspan="6">🦆 Još nema korisnika u bazi!</td></tr>';
+        return;
+      }
+
+      users.forEach(u => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${u.id}</td>
+          <td>${u.username}</td>
+          <td>${u.ime}</td>
+          <td>${u.email}</td>
+          <td>${u.godina}</td>
+          <td><a href="#" onclick="deleteUser(${u.id})">🗑</a></td>
+        `;
+        userTable.appendChild(row);
+      });
+    }
+
+    function deleteUser(id) {
+      users = users.filter(u => u.id !== id);
+      renderTable();
+    }
+
+    function logout() {
+      dashboard.style.display = "none";
+      authContainer.style.display = "block";
+      loginForm.reset();
+    }
+  </script>
+</body>
+</html>
