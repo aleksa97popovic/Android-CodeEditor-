@@ -1,0 +1,17 @@
+daffy-duck-ui/
+│
+├── assets/
+│   ├── images/           # Sve slike (pozadine, Daffy Duck SVG/PNG)
+│   │   ├── daffy.png
+│   │   └── background.jpg
+│   └── icons/            # Opcionalno: ikone, favicon
+│
+├── css/
+│   └── style.css         # Svi CSS stilovi
+│
+├── js/
+│   └── main.js           # JavaScript funkcionalnost (login, registracija, dashboard)
+│
+├── index.html            # Glavna HTML stranica
+├── README.md             # Opis projekta, uputstva, screenshot
+└── LICENSE               # Licenca (MIT/Apache, itd.)
